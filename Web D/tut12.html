@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psedo selectors</title>
+    <style>
+        .btn {
+            font-family: cursive;
+            background-color: cadetblue;
+            padding: 3px;
+            border: solid red 1px;
+            border-radius: 3px;
+            text-decoration: none;
+            
+
+        }
+
+        .btn:hover {
+
+            cursor: pointer;
+            transform: translate(2px, 1px);
+            background-color: palegreen;
+            transition-duration: 400ms;
+        }
+    button:active{
+        background-color: rgb(255, 38, 0);
+    }
+        .container {
+            background-color: chocolate;
+            width: 500px;
+            margin-left: 50px;
+            padding: 10px;
+            border: crimson solid 3px;
+            border-radius: 5px;
+            margin: auto;
+
+        }
+
+        .btn2 {
+            color: rgb(0, 0, 0);
+            background-color: teal;
+            padding: 3px;
+            border: solid 2px red;
+            border-radius: 5px;
+        }
+
+  a:visited{
+       background-color: rgb(187, 15, 67);
+   }
+
+        h3 {
+            margin-left: 5px;
+
+        }
+
+        body::-webkit-scrollbar {
+            width: 5px;
+
+        }
+
+        body::-webkit-scrollbar-track {
+
+            background-color: rgb(197, 154, 197);
+        }
+
+        body::-webkit-scrollbar-thumb {
+
+            background-color: rgb(143, 12, 143);
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <h3>This is a header</h3>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolore, repellat harum. Quam nihil ex delectus
+            dolorem, accusamus, dicta dolorum cum quis voluptas animi aliquid, in repudiandae hic tempora iure labore
+            nam possimus soluta. Voluptatum excepturi a laboriosam! Nemo voluptatum consequatur fugit corporis error hic
+            perferendis, molestiae veniam culpa ad, magni et officiis dolorum facere eveniet dolorem! Lorem ipsum dolor
+            sit amet consectetur adipisicing elit. Eveniet sit delectus illum ipsam quaerat totam iste, adipisci magnam,
+            velit fugiat nisi esse impedit reprehenderit quae voluptates, doloremque quia soluta. Eveniet.</p>
+        <a href="https://www.w3schools.com/cssref/sel_visited.asp"   class="btn2" >Read more.</a>
+        <button class="btn">Read more</button>
+        <button class="btn">Contact us.</button>
+    </div>
+</body>
+
+</html>

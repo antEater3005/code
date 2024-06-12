@@ -1,0 +1,47 @@
+{
+  "folders": [
+	{
+		"path": "."
+	}
+],
+  "settings": {
+    "files.associations": {
+      "*.ejs": "html",
+      "vector": "cpp",
+      "iostream": "cpp",
+      "array": "cpp",
+      "bitset": "cpp",
+      "initializer_list": "cpp",
+      "regex": "cpp",
+      "utility": "cpp",
+      "valarray": "cpp",
+      "deque": "cpp",
+      "string": "cpp",
+      "map": "cpp",
+      "new": "cpp",
+      "forward_list": "cpp",
+      "list": "cpp",
+      "unordered_map": "cpp",
+      "unordered_set": "cpp",
+      "cstdlib": "cpp",
+      "atomic": "cpp",
+      "*.tcc": "cpp",
+      "cmath": "cpp",
+      "complex": "cpp",
+      "random": "cpp",
+      "fstream": "cpp",
+      "functional": "cpp",
+      "future": "cpp",
+      "istream": "cpp",
+      "limits": "cpp",
+      "sstream": "cpp",
+      "streambuf": "cpp",
+      "tuple": "cpp",
+      "type_traits": "cpp"
+    }
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": []
+  }
+}

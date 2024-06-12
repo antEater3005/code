@@ -1,0 +1,6 @@
+@import "./variables.scss";
+@import "./header";
+.contact   {
+@extend header;
+}
+  

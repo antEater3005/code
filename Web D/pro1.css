@@ -1,0 +1,101 @@
+  body{
+      /* Linear gradient */
+      
+    /* background-image: linear-gradient(to right, #051937, #004d7a, #008793, #00bf72, #a8eb12); */
+    /* radial gradient */
+    background-image: radial-gradient(   #051937, #004d7a, #008793, #00bf72, #a8eb12);
+  }
+ #head{border:dashed 2px green;
+    padding: 5px;
+     color: brown;
+     text-align: center;
+     margin: auto 9.5em;
+     background-color : cadetblue ;
+
+ }
+ #head:hover{
+     transform: scale(2);
+     transition: ;
+ }
+ #Note{
+     
+    border: solid 1px red;
+    border-radius: 5px;
+    padding: 3px;
+     background-color: rgb(2, 63, 121);
+     color: white;
+     margin-top: auto;
+
+
+ }
+     
+ 
+#name{   width: fit-content;
+    background-color: steelblue; border:solid 2px rgb(1, 87, 145) ;
+    border-radius: 5px;
+   padding: 5px;
+    box-shadow:0 0 5px rgb(0, 0, 0)   ;
+    
+    height: 4em;
+     
+    
+    margin: auto 2em;
+    color: rgb(0, 0, 0);
+    
+}
+ /* body{ 
+     background-color: tan;
+ } */
+ 
+#Gender{width: fit-content;
+    margin-top: .5em;   padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    
+ color: rgb(0, 0, 0);
+ border: solid 1px red;
+ border-radius: 5px;
+ background-color: rgb(23, 117, 194);
+}
+#Branch{
+    width: fit-content;
+    background-color: rgb(123, 108, 209);
+    border:ridge 2px rgb(7, 6, 14);
+    padding: 5px;
+   border: spacing 2 2em;
+   margin-left: 50px;
+    border-radius: 5px;
+    margin-top: .5em;
+ margin-bottom:.5em;
+}
+#sele{
+    color: rgb(59, 117, 175);
+    background-color:rgb(180, 181, 182);
+}
+#w{
+    background-color: skyblue;
+}
+#sub:hover{
+    background-color: black;
+    cursor: pointer;
+    color: blanchedalmond;
+    
+    transform: translate(5px,2px)  ;
+}
+#ch:hover{
+    cursor: pointer;
+  box-shadow:0 0 10px brown;
+ 
+}
+#year{width: fit-content;
+    border:solid 2px coral;
+    margin-left: 2em;
+    border-radius: 5px;padding: 5px;
+    margin-bottom: .5em;
+    background-color: rgb(252, 185, 160);
+}
+#Year{   
+    color: cornflowerblue;
+    background-color: cornsilk;
+}

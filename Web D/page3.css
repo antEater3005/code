@@ -1,0 +1,40 @@
+#container{
+    background-color: chartreuse;
+    border: 2px solid crimson;
+    border-radius: 5px;
+}
+#centered{
+     background-color: fuchsia;
+  
+ text-align: center;
+}  
+ 
+ 
+#fixed-position{
+position: fixed;
+background-color: blueviolet;
+color: blanchedalmond;
+left: 0px;
+top:100px;
+
+}
+#relative1{
+    background-color: blue;
+border: brown 2px solid;
+padding: 2px;
+border-radius: 5px;
+height: 20px;
+
+}
+#relative2{
+    position: relative;
+      left: 20px;
+      top: 30px;
+      background-color: burlywood;
+      border: solid blue;
+      border-radius: 5px;
+}
+img{
+    margin: 5px;
+    float: right;
+}

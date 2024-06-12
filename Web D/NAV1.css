@@ -1,0 +1,50 @@
+*{
+    font-family: cursive;
+}
+body{
+    margin-left: 20px;
+}
+.navbar{
+    background-color: rgb(207, 178, 140);
+    border: solid 3px red;
+    border-radius: 5px;
+    width: auto;
+
+    
+
+}
+.navbar li{
+    float: left;
+    list-style: none;
+     margin: 4px;
+
+}
+ 
+.navbar li a{
+     padding: 3px;
+    text-decoration: none;
+    border: solid 1px crimson;
+    border-radius: 5px;
+    background-color: cyan;
+}
+
+.navbar ul{
+    overflow: auto;
+    text-decoration: none;
+    margin: auto;
+    border-radius: 5px;
+}
+.navbar ul :hover{
+    color: rgb(0, 0, 0);
+    background-color: rgb(174, 243, 160);
+    transform: translate(3px,2px) scale(1.01) ;
+     transition-duration: 200ms;
+    
+}
+ 
+#search{
+    
+    margin-right: 0px;
+    border-radius: 5px;
+    transform: none ;
+}

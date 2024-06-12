@@ -1,0 +1,7 @@
+function overloading::
+   it means same function name but different number and types of arguments to a function. 
+   It's a type of static or compile time polymorphism.
+   The overloaded function may or may not have same return type but arguments should be different.
+
+****** INHERITANCE ******
+    

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile responsive design</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+         body{
+            color: red;
+        }
+        .head {
+            font-size: 6rem;
+            
+        }
+
+        .sub {
+            font-size: 4rem;
+           
+
+        }
+
+        .body {
+            color: red;
+        }
+
+        @media (max-width: 500px) {
+
+            body {
+                color: chartreuse;
+            }
+
+        }
+        @media (orientation:landscape){
+            .head{
+                color: royalblue;
+                font-size: 7rem ;
+            }
+        }
+       
+    </style>
+</head>
+
+<body>
+    <h1 class="head">Title</h1>
+    <h3 class="sub">Sub Title</h3>
+</body>
+
+</html>

@@ -1,0 +1,1 @@
+{"name":"Local: first","url":"b:\\Pro\\test\\first.cpp","tests":[{"id":1652685823062,"input":"7 3 \n-2, 2, -5, 12, -11, -1, 7","output":"5"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"b:\\Pro\\test\\first.cpp","group":"local","local":true}

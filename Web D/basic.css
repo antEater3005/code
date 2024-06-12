@@ -1,0 +1,28 @@
+div {
+  background-color: skyblue;
+  color: rgb(5, 54, 117);
+}
+
+#quote {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: rgb(201, 20, 20);
+}
+
+.movie {
+  font-family: cursive;
+  background-color: mintcream;
+  color: maroon;
+}
+
+span#author {
+  font-family: cursive;
+  text-transform: uppercase;
+}
+
+#hobby ol li {
+  color: rgb(34, 224, 28);
+}
+
+#hobby ul li {
+  color: darkviolet;
+}

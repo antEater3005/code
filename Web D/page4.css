@@ -1,0 +1,9 @@
+ol {
+    width: 100px;
+    padding: 10px;
+    margin:2px auto;
+    background-color:black;
+    color: rgb(255, 255, 255);
+    max-height: 200px;
+    overflow: scroll;
+}

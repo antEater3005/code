@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flex box tutorial</title>
+    <style>
+        .flexbox{
+                /* flex-wrap: wrap; */
+            display: flex;
+            background-color: chartreuse;
+          border-radius: 13px;
+          border:solid rgb(67, 153, 67) 3px;
+           
+        
+        }
+        .flexitm{
+        
+         width: 200px;
+         height: 100px;
+         margin: 20px;
+         border:solid black 3px;
+         background-color: burlywood;
+        }
+    .itm1{
+        min-height: 300px; 
+        flex-shrink: 0;
+        order: 1;
+    }
+    .itm2{
+        min-height: 200px;
+        flex-grow: 2;
+        flex-basis: 0;
+        align-self: center;
+        order: 3;
+    }
+    .itm3{
+        min-height: 100px;
+        flex-grow: 1;
+        align-self: flex-end;
+        order: 2;
+    }
+    </style>
+</head>
+<body>
+    <div class="flexbox">
+    <div class="flexitm itm1">flexbox item 1 </div>
+    <div class="flexitm itm2">flexbox item 2</div>
+    <div class="flexitm itm3">flexbox item 3</div>
+    </div>
+</body>
+</html>  

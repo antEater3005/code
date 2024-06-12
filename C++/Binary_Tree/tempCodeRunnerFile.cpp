@@ -1,0 +1,1 @@
+N2Rpath.push_back(root->data); 

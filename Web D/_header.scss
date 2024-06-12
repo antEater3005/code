@@ -1,0 +1,20 @@
+@mixin pos ($direction){
+    height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $direction;
+}
+header {
+@include pos(column);
+
+  background: rgb(93, 167, 192);
+  height: 100vh;
+  color: $textcolor;
+  button { 
+    background: $primarybtn;
+    &:hover {
+      transform: scale(2);
+    }
+  }
+}

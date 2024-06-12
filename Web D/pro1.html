@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Registration Form</title>
+    <link rel="stylesheet" href="pro1.css">
+</head>
+
+<body>
+    <h2 id="head">Hostel Registration Form</h2>
+    <p><b id="Note">NOTE:</b><i><b>This form should be filled by the students who are interested to stay in University
+                Hostels.</b></i>
+    </p>
+    <form action="Submit.js">
+        <div id="reg">
+            <div id="name">
+                <label for="First Name"><b>First-Name:</b></label>
+                <input id="w" type="text" name="FirstName:" placeholder="Anjani" required>
+                <br>
+                <label for="Middle-name"><b>Middle-name</b></label>
+                <input id="w" type="text" name="Middle-name" placeholder="Kumar(optional)">
+                <br>
+                <label for="Surname"><b>Lastname:</b></label>
+                <input id="w" type="text" name="Surname-Name" placeholder="Pandey" required>
+
+            </div>
+
+
+
+
+
+            <div id="Gender">
+                <label for="Gender"> <b>Gender:</b></label>
+                <input type="radio" name="gen" required>
+                <label for="Gender">Male</label>
+                <input type="radio" name="gen" required>
+                <label for="Gender">Female</label>
+                <input type="radio" name="gen" required>
+                <label for="Gender">Other</label>
+
+
+
+            </div>
+            <div id="Branch">
+                <label for="Branch"><b>Branch:</b></label>
+                <select id="sele" name="Branch" required>
+                    <option value="01" selected disabled>Choose your branch</option>
+                    <option value="02">CE</option>
+                    <option value="03">EE</option>
+                    <option value="04">ME</option>
+                    <option value="05">ECE</option>
+                    <option value="06">CHE</option>
+                    <option value="07">CSE</option>
+                    <option value="08">IT</option>
+
+
+
+                </select>
+
+
+
+
+            </div>
+            <div id="year">
+                <label for="Year">Year:</label>
+                <select id="Year" name="year" required>
+                    <option value="00" selected disabled>year </option>
+                    <option value="01">First year</option>
+                    <option value="02">Second year</option>
+                    <option value="03">Third year</option>
+                    <option value="04">Fourth year</option>
+
+                </select>
+            </div>
+            <div id="category">
+                <label for="Category"> Category:</label>
+                <select name="Category" id="category">
+                    <option value="0" selected disabled>category</option>
+                    <option value="1">Gen</option>
+                    <option value="2">OBC-NCL</option>
+                    <option value="3">SC</option>
+                    <option value="4">ST</option>
+                    <option value="">None</option>
+                </select>
+
+            </div>
+            <div>
+                <label for="Contact Number">Contact Number:</label>
+                <input type="tel" maxlength="10" name="Mobile No" placeholder="00000000XX" required>
+
+
+            </div>
+
+            <label for="State">Select State</label>
+            <select name="state" required>
+                <option value="0" selected disabled> State</option>
+                <option value="1">
+                    Andhra Pradesh</option>
+                <option value="1">
+                    Andhra Pradesh</option>
+                <option value="1"> Assam</option>
+                <option value="1"> Bihar</option>
+                <option value="1">Chhattisgarh</option>
+                <option value="1"> Goa</option>
+                <option value="1"> Gujarat</option>
+                <option value="1"> Haryana</option>
+                <option value="1">Himachal Pradesh</option>
+                <option value="1"> Jammu and Kashmir</option>
+                <option value="1"> Jharkhand</option>
+                <option value="1"> Karnataka</option>
+                <option value="1"> Kerala</option>
+                <option value="1">Madhya Pradesh</option>
+                <option value="1"> Maharashtra</option>
+                <option value="1"> Manipur</option>
+                <option value="1"> Meghalaya</option>
+                <option value="1"> Mizoram</option>
+                <option value="1"> Nagaland</option>
+                <option value="1"> Odisha</option>
+                <option value="1">Punjab</option>
+                <option value="1"> Rajasthan</option>
+                <option value="1"> Sikkim</option>
+                <option value="1">Tamil Nadu</option>
+                <option value="1">Telangana</option>
+                <option value="1"> Tripura</option>
+                <option value="1"> Uttar Pradesh</option>
+                <option value="1">Uttarakhand</option>
+                <option value="1"> West Bengal</option>
+            </select>
+        </div>
+        <div id="District">
+            <label for="District">District Name:</label>
+            <input type="text" name="District" placeholder="Gorakhpur" required>
+        </div>
+        <div id="pin">
+            <label for="pin">Pincode</label>
+            <input type="tel" name="Pincode" maxlength="6" required>
+        </div>
+
+
+
+
+
+        <div id="submit">
+            <label for="submit">All the information provided by me is correct.
+            </label>
+            <input id="ch" type="checkbox" name="agree" required>
+            <button id="sub" type="submit">Submit</button>
+        </div>
+        <a href="http://www.mmmut.ac.in/Hostel"><img src="http://www.mmmut.ac.in/images/Mix-Hostel.jpg"
+                alt="Hostels"></a>
+        <div>
+
+
+        </div>
+    </form>
+
+
+
+</body>

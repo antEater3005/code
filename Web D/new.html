@@ -1,0 +1,262 @@
+<!-- NOTE: to display code in your webpage we use code tag and if we want to display tag in webpage the we use the following syntax-->
+<!-- To display link tag we type: &lt;link rel="stylesheet" href=""&gt; -->
+
+<!-- <link rel="stylesheet" href=""> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOG</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Style+Script&display=swap" rel="stylesheet">
+    <style>
+        #Head {
+            font-family: 'Style Script', cursive;
+            margin-left: 50px;
+            margin-bottom: 1px;
+            height: 40px;
+            color: rgb(16, 122, 243);
+        }
+
+        #head2 {
+            margin-top: 0px;
+            font-family: 'Style Script', cursive;
+            height: 14px;
+            margin-left: 10px;
+            color: rgb(7, 57, 221);
+
+        }
+
+        hr {
+            color: rgb(170, 144, 194);
+            margin-right: 55%;
+
+        }
+
+        .para {
+
+            color: rgb(228, 78, 110);
+            font-family: 'Style Script', cursive;
+            /* font-family: cursive; */
+            background-color: rgb(221, 173, 173);
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        #para1 {
+            float: left;
+            width: 40%;
+        }
+
+        #para2 {
+            width: 40%;
+            float: right;
+        }
+
+        q {
+            color: rgb(127, 127, 199);
+        }
+
+        .h1 {
+            margin: 0px;
+            size: 12px;
+            font-weight: bold;
+
+        }
+
+        .content {
+            background-color: rgb(85, 196, 118);
+            height: 510px;
+            clear: both;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #dev {
+            margin-top: 0px;
+
+        }
+
+        #txt {
+            background-color: blanchedalmond;
+            border-radius: 5px;
+            padding: 5px;
+            color: blue;
+        }
+
+        .navbar {
+            display: flex;
+            flex-wrap: wrap;
+            width: max-content;
+            gap: 1rem;
+            border: rebeccapurple solid 2px;
+            border-radius: 5px;
+            margin: 4em 0;
+            padding: .25em 1em;
+
+        }
+
+        .navbar li {
+            display: block;
+        }
+
+        .navbar a {
+            color: black;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+            text-decoration-color: orange;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 2px;
+            transition-duration: 500ms;
+        }
+
+        body {
+            margin-bottom: 200px;
+            margin-left: 10px;
+        }
+
+        #image {
+            border: orange solid 5px;
+
+
+            transition: 1s;
+
+        }
+
+        #image:hover {
+
+            transform: scale(1.2);
+
+            transition: all ease-in-out .7s;
+            transition-property: all;
+            transition-duration: 0.7s;
+            transition-timing-function: ease-in-out;
+            transition-delay: 0s;
+        }
+
+        .im {
+            width: 405px;
+            height: 200px;
+            border: blue solid 5px;
+            border-radius: 5px;
+            margin-left: 200px;
+            
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="Head">BLOG</h1>
+    <h2 id="head2">This the subtitle of the page.</h2>
+    <hr id="line" color>
+    <div class="content">
+        <div class="para" id="para1">
+            <h4 class="h1">Para 1</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium temporibus illo
+                tenetur quasi numquam ab blanditiis architecto atque quo. Quis, laborum! Dolore dolorum quos consequatur
+                officiis dolores, possimus ea aspernatur nobis minus vero cumque quod recusandae nam vitae doloremque
+                assumenda
+                repudiandae cum qui beatae voluptatem non at. Perspiciatis voluptatem iure numquam, corrupti architecto
+                maxime
+                esse eligendi debitis in nemo impedit autem optio facilis error harum quisquam. Velit, quos pariatur
+                neque
+                sapiente repellendus obcaecati dolores necessitatibus veniam, mollitia error ex ad. Soluta tempora ipsum
+                eos
+                facere itaque iste cupiditate esse modi maiores quasi molestias doloremque, quis quae vitae numquam
+                fugit
+                illum
+                <code>color:Black</code>
+                assumenda consequatur provident ab aut similique. Distinctio ea iusto reprehenderit atque rem. Ducimus
+                fugit
+                nemo doloribus modi neque aut distinctio, facere qui &lt;H1&gt; sequi.
+            </p>
+            <cite>-Devendra🖤da</cite>
+            <br>
+            <small>
+                <p id="dev">&copy;Copyright</p>
+            </small>
+        </div>
+
+        <div class="para" id="para2">
+            <h4 class="h1">Para 2</h4>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium temporibus illo
+                tenetur quasi numquam ab blanditiis architecto atque quo. Quis, laborum! Dolore dolorum quos consequatur
+                officiis dolores, possimus ea aspernatur nobis minus vero cumque quod recusandae nam vitae doloremque
+                assumenda
+                repudiandae cum qui beatae voluptatem non at. Perspiciatis voluptatem iure numquam, corrupti architecto
+                maxime
+                esse eligendi debitis in nemo impedit autem optio facilis error harum quisquam. Velit, quos pariatur
+                neque
+                sapiente repellendus obcaecati dolores necessitatibus veniam, mollitia error ex ad. Soluta tempora ipsum
+                eos
+                facere itaque iste cupiditate esse modi maiores quasi molestias doloremque, quis quae vitae numquam
+                fugit
+                illum
+                assumenda consequatur provident ab aut similique. Distinctio ea iusto reprehenderit atque rem. <br>
+                Ducimus
+                fugit
+                nemo doloribus modi neque aut distinctio, facere qui sequi.</p>
+            <cite>-Anjani</cite>
+        </div>
+    </div>
+    <!-- <time datetime="2025-05-08">May 8, 2025</time> -->
+    <!--Subscript ans superscript in html-->
+    <!-- <p>H<sub>2</sub>O</p>
+    <p>(a+b)<sup>2</sup> </p> -->
+    <footer>
+        <small> &copy;copyright</small>
+    </footer>
+    <p>This paragraph has <em>emphasized text</em> in it.</p> <br>
+    <article>
+        <h1>This is headline.</h1>
+        <p>This is first paragraph.</p>
+        <p>This is second paragraph.</p>
+        <p>This third paragraph ha <em>empahzised</em> text.</p>
+    </article>
+    <blockquote contenteditable="true">This can be edited.</blockquote>
+    <p dir="rtl">.This paragraph is set to display from right to left</p>
+    <textarea name="sduy" id="txt" cols="30" rows="10">Hello, This is a textarea.</textarea><br>
+    <!-- &lt;, &gt;, &colon;,&copysr;,&copy; and other same type of character formatting are known as "CHARACTER ENTITIES".-->
+    <!-- &#8377; -> This is rupee character entiti
+  ₹ -> this is copied from the web.-->
+    <!-- The &nbsp;-> it means none breaking space. It can also be used to add more than one space b/w two words.-->
+    <p>This is an example of non-breaking&nbsp;space entity(&amp;nbsp;).</p>
+    <!--In the above example the the word 'breaking' and 'space' would not separate from eachother that means both word will come in a single sentence-->
+    <h1> This is a test. </h1>
+
+    <p> If this were an actual emergency,
+        <!--  Should there be an actual emergency? -->
+        there would be panic.
+    </p>
+    <a href="https://www.example.com">This is link tab.</a>
+    <p>This is how a <a href="https://www.example.com" target="blank">link</a> is nested inside a paragraph.</p>
+    <nav role="navigation" aria-label="main menu">
+        <ul class="navbar">
+            <li><a href="/Web D/page1.html">Home</a></li>
+            <li><a href="/Web D/page2.html">People</a></li>
+            <li><a href="/Web D/page3.html">Prices</a></li>
+            <li><a href="/Web D/page4.html">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="im">
+        <img id="image" src="/Web D/av.jpg" width="400px" alt="">
+    </div>
+    <!-- <footer contenteditable="true" >
+    <a href="sdhash">Privacy Policy</a>
+    <a href="asds">Terms of Service</a> -->
+    <!-- </footer> -->
+</body>
+
+
+</html>

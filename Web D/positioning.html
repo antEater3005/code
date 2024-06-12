@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Positioning</title>
+    <style>
+        .parent {
+            background-color: royalblue;
+            width: 300px;
+            padding: 10px;
+          position: relative;
+            height: 200vh;
+
+        }
+
+        .child1 {
+
+            position: sticky;
+           top: 4px;
+            background-color: rgb(98, 209, 98);
+        }
+
+        .child2 {
+            background-color: rgb(209, 152, 98);
+        }
+
+        .child3 {
+            background-color: rgb(209, 98, 144);
+        }
+
+        .child4 {
+            background-color: rgb(209, 98, 98);
+        }
+
+        .ch {
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+        parent
+        <div class="child1 ch">One</div>
+        <div class="child2 ch">Two</div>
+        <div class="child3 ch">Three</div>
+        <div class="child4 ch">Four</div>
+    </div>
+</body>
+
+</html>

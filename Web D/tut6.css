@@ -1,0 +1,47 @@
+/* #anime {
+    height: 200px;
+    width: 300px;
+    border: solid black 2px;
+    background-color: red;
+  position: absolute;
+  animation-name: sd;
+  animation-duration: 4s;
+  animation-delay: 2s;
+    animation-iteration-count: 15 ;
+ }
+
+  @keyframes sd{
+      0%{background-color: red;left:0px;top:0px;}
+      25%{background-color: rgb(15, 121, 29);left: 300px ;top:0px;}
+      50%{background-color: rgb(76, 48, 180);left:300px;top:300px;}
+      75%{background-color: rgb(238, 14, 126);left:0px;top:300px;}
+      100%{background-color: rgb(241, 201, 23);left:0px;top:0px;}
+     
+  } */
+
+/* div:hover{
+     /* transform: scale(2); */
+/* transform: skew(20deg,10deg); */
+/* transform: translate(20px,20px); */
+body {
+  font-family: "Varela Round", sans-serif;
+}
+.calculator-grid {
+  font-size: 20px;
+  font-weight: bolder;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  min-height: 100vh;
+  grid-template-columns: repeat(4, 120px);
+  grid-template-rows: repeat(5, 100px);
+  row-gap: 0.5rem;
+  column-gap: 0.5rem;
+}
+.span-two {
+  grid-column: span 2;
+}
+.calculator-grid > button {
+  font-size: 25px;
+  font-weight: 700;
+}
