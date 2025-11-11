@@ -1,29 +1,16 @@
 header, .contact {
   height: 100vh;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  background: #5da7c0;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: rgb(93, 167, 192);
   height: 100vh;
-  color: #797979;
+  color: rgb(121, 121, 121);
 }
-
 header button, .contact button {
-  background: #803892;
+  background: rgb(128, 56, 146);
 }
-
 header button:hover, .contact button:hover {
-  -webkit-transform: scale(2);
-          transform: scale(2);
-}
-/*# sourceMappingURL=sass.css.map */
+  transform: scale(2);
+}/*# sourceMappingURL=sass.css.map */

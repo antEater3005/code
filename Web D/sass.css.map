@@ -1,11 +1,1 @@
-{
-    "version": 3,
-    "mappings": "AEOA,AAAA,MAAM,EFLN,QAAQ,CEKD;EANH,MAAM,EAAE,KAAK;EACf,OAAO,EAAE,IAAI;EACb,eAAe,EAAE,MAAM;EACvB,WAAW,EAAE,MAAM;EACnB,cAAc,EAGH,MAAM;EAEjB,UAAU,EAAE,OAAiB;EAC7B,MAAM,EAAE,KAAK;EACb,KAAK,EDXK,OAAkB;CCkB7B;;AAZD,AAME,MANI,CAMJ,MAAM,EFXR,QAAQ,CEWN,MAAM,CAAC;EACL,UAAU,EDdD,OAAiB;CCkB3B;;AAXH,AAQI,MARE,CAMJ,MAAM,AAEH,MAAM,EFbX,QAAQ,CEWN,MAAM,AAEH,MAAM,CAAC;EACN,SAAS,EAAE,QAAQ;CACpB",
-    "sources": [
-        "sass.scss",
-        "variables.scss",
-        "_header.scss"
-    ],
-    "names": [],
-    "file": "sass.css"
-}
+{"version":3,"sources":["_header.scss","variables.scss","sass.css"],"names":[],"mappings":"AAOA;EANI,aAAA;EACF,aAAA;EACA,uBAAA;EACA,mBAAA;EACA,sBAGW;EAEX,6BAAA;EACA,aAAA;EACA,yBCXU;ACQZ;AFIE;EACE,6BCdS;ACYb;AFGI;EACE,mBAAA;AEDN","file":"sass.css"}

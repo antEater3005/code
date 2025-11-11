@@ -1,0 +1,16 @@
+//  WORA : Write Once Run Anywhere
+ /** int
+  * byte: 1 byte -2^7 to 2^7-1
+  * short: 2 bytes
+  * int: 4 bytes
+  * long: 8 bytes -2^63 to 2^63-1, use l for assignment, e.g., long x=113421l;
+  * float: 4 bytes
+  * double: 8 bytes
+  * The decimal values in java is considered as double, we cannot assign float x=5.6, because 5.6 is taken as double, instead write float x=5.6f; use f
+  * char: 2 bytes, java follows UNICODE and c++ follows ASCII
+  */
+ 
+ Types of Interface:: 
+    1: Normal Interface : Have multiple methods
+    2: Functional/SAM Interface : Have a single method, SAM: Single Abstract Method
+    3: Marker Interface : Have no methods

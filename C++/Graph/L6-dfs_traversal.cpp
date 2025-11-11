@@ -256,7 +256,7 @@ void topoSort(vector<vector<pair<int, int>>> adj, vector<bool> &visited, int nod
     topSort.push(node);
 }
 
-vector<int> shortestDistace_DAG(vector<vector<pair<int, int>>> adj, int n, int source)
+vector<int> shortestDistance_DAG(vector<vector<pair<int, int>>> adj, int n, int source)
 {
     stack<int> topSort;
     vector<bool> visited(n, 0);
@@ -280,7 +280,7 @@ vector<int> shortestDistace_DAG(vector<vector<pair<int, int>>> adj, int n, int s
 }
 
 /** Shortest path from a source node to all the node in a unweighted undirected cyclic/acyclic graph  */
-vector<int> shortestDistace_Undirected_cyclic(vector<vector<int>> adj, int n, int source)
+vector<int> shortestDistance_Undirected_cyclic(vector<vector<int>> adj, int n, int source)
 {
     vector<int> distances(n, INFINITY);
     distances[source] = 0;
