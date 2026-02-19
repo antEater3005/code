@@ -1,4 +1,8 @@
 {
   "C_Cpp.errorSquiggles": "Enabled",
-  "cSpell.words": ["Kumari", "Primality", "saumya", "Saumyavinash", "stoll"]
+  "cSpell.words": ["Primality", "stoll"],
+  "files.associations": {
+    "cmath": "cpp"
+  },
+  
 }

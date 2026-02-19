@@ -604,7 +604,7 @@ class Hello {
         // System.out.println(name);
 
         /******** Sorting **********/
-        List<Integer> list2 = Arrays.asList(2, 7, 3, 4, 7, 9, 12);
+        // List<Integer> list2 = Arrays.asList(2, 7, 3, 4, 7, 9, 12);
 
         // Comparator<Integer> comp = new Comparator<Integer>() {
         // // * Comparator takes Class objects as input.
@@ -673,3 +673,4 @@ class Hello {
 
     }
 }
+    

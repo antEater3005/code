@@ -4005,4 +4005,78 @@ long long popularity(int N, vector<long long> Popularity, vector<vector<int>> uv
     return abs(ans);
 }
 
+class Solution
+{
+private:
+    void recurse(int current, vector<int> &present, vector<int> &future, vector<vector<int>> &adj, vector<vector<vector<int>>> &statesProfit, int budget)
+    {
+        vector<pair<vector<int>, vector<int>>> childrenStateProfit;
 
+        for (int next : adj[current])
+        {
+            recurse(next, present, future, adj, statesProfit, budget);
+            childrenStateProfit.push_back({statesProfit[next][0], statesProfit[next][1]});
+        }
+
+        for (int parentBought = 0; parentBought <= 1; parentBought++)
+        {
+            int price = parentBought ? present[current] / 2 : present[current];
+            int profit = future[current] - price;
+
+            vector<int> bestProfitAtU(budget + 1, 0);
+
+            vector<int> childrenProfitIfNotBought(budget + 1, 0);
+
+            for (const auto &child : childrenStateProfit)
+            {
+                vector<int> temp(budget + 1, 0);
+                for (int used = 0; used <= budget; used++)
+                    for (int take = 0; used + take <= budget; take++)
+                        temp[used + take] = max(temp[used + take], childrenProfitIfNotBought[used] + child.first[take]);
+
+                childrenProfitIfNotBought = temp;
+            }
+
+            for (int b = 0; b <= budget; ++b)
+                bestProfitAtU[b] = max(bestProfitAtU[b], childrenProfitIfNotBought[b]);
+
+            if (price <= budget)
+            {
+                vector<int> childrenProfitIfBought(budget + 1, 0);
+
+                for (const auto &child : childrenStateProfit)
+                {
+                    vector<int> temp(budget + 1, 0);
+                    for (int used = 0; used <= budget; used++)
+                        for (int take = 0; used + take <= budget; take++)
+                            temp[used + take] = max(temp[used + take], childrenProfitIfBought[used] + child.second[take]);
+
+                    childrenProfitIfBought = temp;
+                }
+
+                for (int b = price; b <= budget; b++)
+                    bestProfitAtU[b] = max(bestProfitAtU[b], childrenProfitIfBought[b - price] + profit);
+            }
+
+            statesProfit[current][parentBought] = bestProfitAtU;
+        }
+    }
+
+public:
+    int maxProfit(int n, vector<int> &present, vector<int> &future, vector<vector<int>> &hierarchy, int budget)
+    {
+        vector<vector<int>> adj(n, vector<int>());
+        for (auto &it : hierarchy)
+            adj[it[0] - 1].push_back(it[1] - 1);
+
+        vector<vector<vector<int>>> statesProfit(n, vector<vector<int>>(2, vector<int>(budget + 1, 0)));
+        recurse(0, present, future, adj, statesProfit, budget);
+        // return statesProfit[0][0][budget];
+        int ans = 0;
+        for (int b = 0; b <= budget; b++)
+        {
+            ans = max(ans, statesProfit[0][0][b]);
+        }
+        return ans;
+    }
+};
