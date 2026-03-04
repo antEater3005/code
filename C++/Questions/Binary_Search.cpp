@@ -416,13 +416,13 @@ public:
   }
 };
 
-class Solution {
+class Solution8 {
 public:
-
-/**
- *Question: LC-696  
- * Count consecutive same bits and check for pairing 0001111 it can make 3 possible pairs
- */
+  /**
+   *Question: LC-696
+   * Count consecutive same bits and check for pairing 0001111 it can make 3
+   * possible pairs
+   */
   int countBinarySubstrings(string s) {
     int ans = 0, prev = 0, curr = 0;
     for (int i = 0; i < s.length(); i++) {
@@ -437,5 +437,251 @@ public:
     }
     ans += min(prev, curr);
     return ans;
+  }
+};
+
+class Solution10 {
+  /**
+   * LC:761. Special Binary String
+   */
+
+public:
+  string makeLargestSpecial(string s) {
+    int sum = 0, start = 0;
+    vector<string> sbs;
+    for (int i = 0; i < s.length(); i++) {
+      if (s[i] == '0')
+        sum--;
+      else
+        sum++;
+
+      if (sum == 0) {
+        string inner = s.substr(start + 1, i - start - 1);
+        sbs.push_back("1" + makeLargestSpecial(inner) + "0");
+        start = i + 1;
+      }
+    }
+    sort(sbs.begin(), sbs.end(), greater<string>());
+
+    string res = "";
+    for (string str : sbs)
+      res += str;
+    return res;
+  }
+};
+
+class Solution11 {
+  /**
+   * LC:1461. Check If a String Contains All Binary Codes of Size K
+   */
+public:
+  bool hasAllCodes(string s, int k) {
+    int target = 1 << k, found = 0;
+    vector<bool> check(target, false);
+    int curr = 0;
+    for (int i = 0; i < s.length(); i++) {
+      char ch = s[i];
+      curr = (curr << 1) | (ch == '1');
+      if (i >= (k - 1)) {
+        curr = curr & ((1 << k) - 1);
+        found += (check[curr] == 0 ? 1 : 0);
+        check[curr] = true;
+      }
+    }
+    return (1 << k) == found;
+  }
+};
+
+class Solution12 {
+  static const long long INF = -1e18;
+  typedef long long ll;
+
+public:
+  long long maxSumTrionic(vector<int> &nums) {
+    ll result = INF, a = INF, b = INF, c = INF;
+    ll prev = nums[0];
+    for (int i = 1; i < nums.size(); i++) {
+      ll na = INF, nb = INF, nc = INF;
+      ll curr = nums[i];
+      if (curr > prev) {
+        na = max(a, prev) + curr;
+        nc = max(b, c) + curr;
+      } else if (curr < prev) {
+        nb = max(a, b) + curr;
+      }
+      a = na, b = nb, c = nc;
+      result = max(result, c);
+      prev = curr;
+    }
+    return result;
+  }
+};
+
+class Solution13 {
+
+  int getSum(TreeNode *root, int num) {
+    if (!root)
+      return 0;
+    if (!root->left && !root->right) {
+      return (num << 1) | root->val;
+    }
+    return getSum(root->left, (num << 1) | root->val) +
+           getSum(root->right, (num << 1) | root->val);
+  }
+
+public:
+  int sumRootToLeaf(TreeNode *root) { return getSum(root, 0); }
+};
+
+class Solution14 {
+private:
+  int countSetBits(int n) {
+    int count = 0;
+    while (n > 0) {
+      n &= (n - 1);
+      count++;
+    }
+    return count;
+  }
+
+public:
+  vector<int> sortByBits(vector<int> &arr) {
+    vector<pair<int, int>> count;
+    for (int x : arr) {
+      count.push_back({x, countSetBits(x)});
+    }
+    sort(count.begin(), count.end(),
+         [&](const pair<int, int> &a, const pair<int, int> &b) {
+           if (a.second == b.second)
+             return a.first < b.first;
+           return a.second < b.second;
+         });
+
+    vector<int> ans;
+    for (auto x : count)
+      ans.push_back(x.first);
+    return ans;
+  }
+  //   vector<int> sortByBits(vector<int> &arr) {
+  //     sort(arr.begin(), arr.end(), [&](const int &a, const int &b) {
+  //       int countA = __builtin_popcount(a);
+  //       int countB = __builtin_popcount(b);
+  //       if (countA == countB)
+  //         return a < b;
+  //       return countA < countB;
+  //     });
+  //     return arr;
+  //   }
+};
+
+class Solution15 {
+public:
+  int numSteps(string s) {
+    int carry = 0, steps = 0, i = s.length() - 1;
+    while (i >= 0) {
+      int currSum = carry + (s[i] == '1');
+
+      if (i == 0 && currSum == 1) {
+        i--;
+      } else if (currSum % 2 == 0) {
+        i--;
+        carry = carry == 0 ? 0 : 1;
+        steps++;
+      } else {
+        carry++;
+        steps++;
+      }
+    }
+    return steps;
+  }
+};
+
+class Solution16 {
+  static const int mod = 1e9 + 7;
+
+public:
+  int concatenatedBinary(int n) {
+    long ans = 0;
+    int len = 0;
+    for (int i = 1; i <= n; i++) {
+      if ((i & (i - 1)) == 0)
+        len++;
+      ans = ((ans << len) | i) % mod;
+    }
+    return ans;
+  }
+};
+
+class Solution17 {
+public:
+  int minPartitions(string n) {
+    int ans = 0;
+    for (char c : n)
+      if (ans < c - '0')
+        ans = c - '0';
+    return ans;
+  }
+};
+
+class Solution18 {
+  /**
+   * 1536. Minimum Swaps to Arrange a Binary Grid
+   */
+public:
+  int minSwaps(vector<vector<int>> &grid) {
+    int n = grid.size();
+    vector<int> nums;
+    for (auto v : grid) {
+      int x = 0;
+      for (int i = n - 1; i >= 0 && v[i] == 0; i--)
+        x++;
+      nums.push_back(x);
+    }
+    int ans = 0;
+
+    for (int i = 0; i < nums.size(); i++) {
+      // No need to swap
+      if (nums[i] >= n - i - 1)
+        continue;
+
+      int j = i;
+      while (j < n && nums[j] < n - i - 1)
+        j++;
+
+      if (j == n)
+        return -1;
+
+      ans += (j - i);
+
+      while (j > i) {
+        swap(nums[j], nums[j - 1]);
+        j--;
+      }
+    }
+    return ans;
+  }
+};
+
+class Solution {
+public:
+  char findKthBit(int n, int k) {
+    long totalLength = 1;
+    for (int i = 1; i < n; i++)
+      totalLength = totalLength * 2 + 1;
+    cout << totalLength;
+    k--;
+    bool reverse = false;
+    while (totalLength > 2) {
+      int mid = totalLength / 2;
+      if (mid == k)
+        return reverse ? '0' : '1';
+
+      if (k > mid) {
+        k = totalLength - k + 1;
+        reverse = !reverse;
+      }
+      totalLength = mid;
+    }
+    return reverse ? '1' : '0';
   }
 };
