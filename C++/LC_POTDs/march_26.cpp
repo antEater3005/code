@@ -106,7 +106,7 @@ class Solution3 {
     return (sum1 + sum2 + mod) % mod;
   }
 };
-class Solution {
+class Solution4 {
   int mod = 1e9 + 7;
 
  public:
@@ -132,5 +132,136 @@ class Solution {
       }
     }
     return (dp[zero][one][0] + dp[zero][one][1]) % mod;
+  }
+};
+
+class Solution5 {
+ private:
+  int getSum(int x, int y, int d, vector<vector<int>>& grid) {
+    if (d == 0) return grid[x][y];
+
+    int sum = 0;
+    // We traverse 4 sides. Each side has 'd' elements if we don't double-count corners.
+    for (int i = 0; i < d; ++i) {
+      sum += grid[x - d + i][y + i];  // Top-corner to Right-corner
+      sum += grid[x + i][y + d - i];  // Right-corner to Bottom-corner
+      sum += grid[x + d - i][y - i];  // Bottom-corner to Left-corner
+      sum += grid[x - i][y - d + i];  // Left-corner to Top-corner
+    }
+    return sum;
+  }
+
+  bool isValidIndex(int i, int j, int m, int n, int d) { return (i - d >= 0) && (i + d < m) && (j - d >= 0) && (j + d < n); }
+
+ public:
+  vector<int> getBiggestThree(vector<vector<int>>& grid) {
+    int m = grid.size();
+    int n = grid[0].size();
+    // vector<vector<int>> prefixSum(m + 1, vector<int>(n + 1, 0));
+    priority_queue<int, vector<int>, greater<int>> pq;
+    unordered_set<int> seen;
+
+    for (int i = 0; i < grid.size(); i++) {
+      for (int j = 0; j < grid[0].size(); j++) {
+        for (int d = 0; isValidIndex(i, j, m, n, d); d++) {
+          int sum = getSum(i, j, d, grid);
+          if (seen.count(sum)) continue;
+          seen.insert(sum);
+          pq.push(sum);
+          if (pq.size() > 3) pq.pop();
+        }
+      }
+    }
+    vector<int> ans;
+    while (!pq.empty()) {
+      ans.insert(ans.begin(), pq.top());
+      pq.pop();
+    }
+    return ans;
+  }
+};
+
+class Solution6 {
+  /**
+   * LC 1727. Largest Submatrix With Rearrangements
+   * The idea is to compute the prefix sum of the matrix column-wise, which gives us the height of consecutive 1's for each cell. Then, for each row,
+   * we sort the heights and calculate the area of the largest rectangle that can be formed with those heights. The area is given by height * width,
+   * where width is determined by the position in the sorted array. We keep track of the maximum area found across all rows and return it as the
+   * answer.
+   * This approach has a time complexity of O(m*n*log(n)) due to the sorting step for each row, where m is the number of rows and n is the number of columns in the matrix.
+   */
+ public:
+  int largestSubmatrix(vector<vector<int>>& matrix) {
+    int m = matrix.size(), n = matrix[0].size();
+    vector<vector<int>> prefixSum(m, vector<int>(n, 0));
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        if (i == 0)
+          prefixSum[i][j] = matrix[i][j];
+        else
+          prefixSum[i][j] += (matrix[i][j] ? prefixSum[i - 1][j] + 1 : 0);
+      }
+    }
+    int ans = 0;
+    for (auto& it : prefixSum) {
+      sort(it.begin(), it.end());
+      for (int i = 0; i < n; i++) {
+        ans = max(ans, it[i] * (n - i));
+      }
+    }
+    return ans;
+  }
+};
+
+class Solution {
+
+  /**
+   * LC 3070. Count Submatrices with Top-Left Element and Sum Less Than k
+   * The idea is to compute the prefix sum of the matrix, which allows us to quickly calculate the sum of any submatrix. We iterate through each cell in the matrix and calculate the prefix sum up to that cell. If the prefix sum is less than or equal to k, we increment our result count. If it exceeds k, we break out of the inner loop since any larger submatrix starting from that cell will also exceed k.
+   * This approach has a time complexity of O(m*n) for computing the prefix sums and O(m*n) for counting the valid submatrices, resulting in an overall time complexity of O(m*n).
+   */
+  
+ public:
+  // int countSubmatrices(vector<vector<int>>& grid, int k) {
+  //   int result = 0;
+  //   vector<vector<int>> sum(grid.size(), vector<int>(grid[0].size(), 0));
+  //   for (int i = 0; i < grid.size(); i++) {
+  //     for (int j = 0; j < grid[0].size(); j++) {
+  //       if (i == 0 && j == 0)
+  //         sum[i][j] = grid[i][j];
+  //       else if (i == 0)
+  //         sum[i][j] = grid[i][j] + sum[i][j - 1];
+  //       else if (j == 0)
+  //         sum[i][j] = grid[i][j] + sum[i - 1][j];
+  //       else
+  //         sum[i][j] = grid[i][j] + sum[i - 1][j] + sum[i][j - 1] - sum[i - 1][j - 1];
+  //       if (sum[i][j] <= k)
+  //         result++;
+  //       else
+  //         break;
+  //     }
+  //   }
+  //   return result;
+  // }
+
+  int countSubmatrices(vector<vector<int>>& grid, int k) {
+    int result = 0;
+    for (int i = 0; i < grid.size(); i++) {
+      for (int j = 0; j < grid[0].size(); j++) {
+        if (i == 0 && j == 0)
+          grid[i][j] = grid[i][j];
+        else if (i == 0)
+          grid[i][j] = grid[i][j] + grid[i][j - 1];
+        else if (j == 0)
+          grid[i][j] = grid[i][j] + grid[i - 1][j];
+        else
+          grid[i][j] = grid[i][j] + grid[i - 1][j] + grid[i][j - 1] - grid[i - 1][j - 1];
+        if (grid[i][j] <= k)
+          result++;
+        else
+          break;
+      }
+    }
+    return result;
   }
 };
