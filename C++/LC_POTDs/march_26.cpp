@@ -188,7 +188,8 @@ class Solution6 {
    * we sort the heights and calculate the area of the largest rectangle that can be formed with those heights. The area is given by height * width,
    * where width is determined by the position in the sorted array. We keep track of the maximum area found across all rows and return it as the
    * answer.
-   * This approach has a time complexity of O(m*n*log(n)) due to the sorting step for each row, where m is the number of rows and n is the number of columns in the matrix.
+   * This approach has a time complexity of O(m*n*log(n)) due to the sorting step for each row, where m is the number of rows and n is the number of
+   * columns in the matrix.
    */
  public:
   int largestSubmatrix(vector<vector<int>>& matrix) {
@@ -213,14 +214,16 @@ class Solution6 {
   }
 };
 
-class Solution {
-
+class Solution7 {
   /**
    * LC 3070. Count Submatrices with Top-Left Element and Sum Less Than k
-   * The idea is to compute the prefix sum of the matrix, which allows us to quickly calculate the sum of any submatrix. We iterate through each cell in the matrix and calculate the prefix sum up to that cell. If the prefix sum is less than or equal to k, we increment our result count. If it exceeds k, we break out of the inner loop since any larger submatrix starting from that cell will also exceed k.
-   * This approach has a time complexity of O(m*n) for computing the prefix sums and O(m*n) for counting the valid submatrices, resulting in an overall time complexity of O(m*n).
+   * The idea is to compute the prefix sum of the matrix, which allows us to quickly calculate the sum of any submatrix. We iterate through each cell
+   * in the matrix and calculate the prefix sum up to that cell. If the prefix sum is less than or equal to k, we increment our result count. If it
+   * exceeds k, we break out of the inner loop since any larger submatrix starting from that cell will also exceed k. This approach has a time
+   * complexity of O(m*n) for computing the prefix sums and O(m*n) for counting the valid submatrices, resulting in an overall time complexity of
+   * O(m*n).
    */
-  
+
  public:
   // int countSubmatrices(vector<vector<int>>& grid, int k) {
   //   int result = 0;
@@ -262,6 +265,954 @@ class Solution {
           break;
       }
     }
+    return result;
+  }
+};
+
+class Solution8 {
+ public:
+  int maxProductPath(vector<vector<int>>& grid) {
+    int n = grid.size(), m = grid[0].size(), mod = 1e9 + 7;
+    vector<long> dpMin(m), dpMax(m);
+    for (int i = 0; i < n; i++) {
+      vector<long> currMin(m), currMax(m);
+      for (int j = 0; j < m; j++) {
+        long curr = grid[i][j];
+        if (i == 0 && j == 0) {
+          currMax[j] = curr;
+          currMin[j] = curr;
+        } else {
+          long bestMin = LONG_MAX, bestMax = LONG_MIN;
+          if (i > 0) {
+            bestMax = max({bestMax, dpMax[j] * curr, dpMin[j] * curr});
+            bestMin = min({bestMin, dpMin[j] * curr, dpMax[j] * curr});
+          }
+          if (j > 0) {
+            bestMax = max({bestMax, currMax[j - 1] * curr, currMin[j - 1] * curr});
+            bestMin = min({bestMin, currMin[j - 1] * curr, currMax[j - 1] * curr});
+          }
+
+          currMin[j] = bestMin;
+          currMax[j] = bestMax;
+        }
+      }
+      swap(currMax, dpMax);
+      swap(currMin, dpMin);
+    }
+    return dpMax[m - 1] < 0 ? -1 : (dpMax[m - 1] % mod);
+  }
+};
+
+class Solution9 {
+ public:
+  vector<vector<int>> constructProductMatrix(vector<vector<int>>& grid) {
+    int n = grid.size(), m = grid[0].size(), prefix = 1, suffix = 1, mod = 12345;
+    vector<vector<int>> ans(n, vector<int>(m, 1));
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        ans[i][j] = (prefix * ans[i][j]) % mod;
+        ans[n - i - 1][m - j - 1] = (suffix * ans[n - i - 1][m - j - 1]) % mod;
+        prefix = (1L * prefix * grid[i][j]) % mod;
+        suffix = (1L * suffix * grid[n - i - 1][m - j - 1]) % mod;
+      }
+    }
+    return ans;
+  }
+};
+
+class Solution10 {
+ public:
+  bool canPartitionGrid(vector<vector<int>>& grid) {
+    long n = grid.size(), m = grid[0].size(), totalSum = 0;
+    vector<long> colSum(m, 0), rowSum(n, 0);
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        colSum[j] += grid[i][j];
+        rowSum[i] += grid[i][j];
+        totalSum += grid[i][j];
+      }
+    }
+    long sum = 0;
+    for (int i = 0; i < n - 1; i++) {
+      sum += rowSum[i];
+      if (sum * 2 == totalSum) return true;
+    }
+    sum = 0;
+
+    for (int j = 0; j < m - 1; j++) {
+      sum += colSum[j];
+      if (sum * 2 == totalSum) return true;
+    }
+    return false;
+  }
+};
+
+class Solution11 {
+ public:
+  bool canPartitionGrid(vector<vector<int>>& grid) {
+    int n = grid.size(), m = grid[0].size();
+    long totalSum = 0;
+    unordered_map<int, int> freq;
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        totalSum += grid[i][j];
+        freq[grid[i][j]]++;
+      }
+    }
+
+    unordered_map<int, int> prefixFreq, suffixFreq = freq;
+
+    // cut along rows
+    long sum = 0;
+    for (int i = 0; i < n - 1; i++) {
+      for (int j = 0; j < m; j++) {
+        prefixFreq[grid[i][j]]++;
+        suffixFreq[grid[i][j]]--;
+        sum += grid[i][j];
+      }
+
+      long diff = abs(2 * sum - totalSum);
+      if (diff == 0)
+        return true;
+      else if (m == 1) {
+        if (diff == grid[0][0] || diff == grid[i][0] || diff == grid[i + 1][0] || diff == grid[n - 1][0]) return true;
+      } else if ((i == 0 && i == n - 2)) {
+        if (diff == grid[i][0] || diff == grid[i][m - 1] || diff == grid[i + 1][0] || diff == grid[i + 1][m - 1]) return true;
+      } else if (i > 0 && i < n - 2) {
+        return suffixFreq[diff] > 0 || prefixFreq[diff] > 0;
+      } else {
+        if (i == 0) {
+          if (grid[i][0] == diff || grid[i][m - 1] == diff || suffixFreq[diff] > 0) return true;
+        } else if (i == n - 1) {
+          if (grid[i + 1][0] == diff || grid[i + 1][m - 1] == diff || prefixFreq[diff] > 0) return true;
+        }
+      }
+    }
+
+    prefixFreq.clear();
+    suffixFreq = freq;
+
+    sum = 0;
+    for (int j = 0; j < m - 1; j++) {
+      for (int i = 0; i < n; i++) {
+        prefixFreq[grid[i][j]]++;
+        suffixFreq[grid[i][j]]--;
+        sum += grid[i][j];
+      }
+
+      long diff = abs(2 * sum - totalSum);
+      if (diff == 0)
+        return true;
+      else if (n == 1) {
+        if (diff == grid[0][0] || diff == grid[0][j] || diff == grid[0][j + 1] || diff == grid[0][m - 1]) return true;
+      } else if ((j == 0 && j == m - 2)) {
+        if (diff == grid[0][j] || diff == grid[n - 1][j] || diff == grid[0][j + 1] || diff == grid[n - 1][j + 1]) return true;
+      } else if (j > 0 || j < m - 2) {
+        return suffixFreq[diff] > 0 || prefixFreq[diff] > 0;
+      } else {
+        if (j == 0) {
+          if (grid[0][j] == diff || grid[n - 1][j] == diff || suffixFreq[diff] > 0) return true;
+        } else if (j == m - 1) {
+          if (grid[0][j + 1] == diff || grid[n - 1][j + 1] == diff || prefixFreq[diff] > 0) return true;
+        }
+      }
+    }
+    return false;
+  }
+};
+
+class Solution12 {
+ public:
+  string generateString(string str1, string str2) {
+    int n = str1.size(), m = str2.size();
+    string result(n + m - 1, 'a');
+    vector<bool> canChange(n + m - 1, true);
+    for (int i = 0; i < n; i++) {
+      if (str1[i] == 'T') {
+        for (int j = i; j < i + m; j++) {
+          if (!canChange[j] && result[j] != str2[j - i]) return "";
+          canChange[j] = false;
+          result[j] = str2[j - i];
+        }
+      }
+    }
+
+    for (int i = 0; i < n; i++) {
+      if (str1[i] == 'F') {
+        bool needChange = true;
+        for (int j = i; j < i + m; j++) {
+          if (result[j] != str2[j - i]) {
+            needChange = false;
+            break;
+          }
+        }
+
+        if (needChange) {
+          for (int j = i + m - 1; j >= i; j--) {
+            if (canChange[j]) {
+              result[j] = 'b';
+              needChange = false;
+              break;
+            }
+          }
+        }
+        if (needChange) return "";
+      }
+    }
+    return result;
+  }
+};
+
+class Solution13 {
+  int n, m;
+  int dp[501][501][3];
+  int solve(vector<vector<int>>& coins, int i, int j, int neu) {
+    if (i == n - 1 && j == m - 1) {
+      if (coins[i][j] < 0 && neu > 0) {
+        return 0;
+      }
+      return coins[i][j];
+    }
+
+    if (i >= n || j >= m) return INT_MIN;
+
+    if (dp[i][j][neu] != INT_MIN) return dp[i][j][neu];
+
+    int take = coins[i][j] + max(solve(coins, i + 1, j, neu), solve(coins, i, j + 1, neu));
+
+    if (coins[i][j] < 0 && neu > 0) take = max({take, solve(coins, i + 1, j, neu - 1), solve(coins, i, j + 1, neu - 1)});
+    return dp[i][j][neu] = take;
+  }
+
+ public:
+  int maximumAmount(vector<vector<int>>& coins) {
+    n = coins.size(), m = coins[0].size();
+    for (int i = 0; i <= n; i++)
+      for (int j = 0; j <= m; j++)
+        for (int k = 0; k < 3; k++) dp[i][j][k] = INT_MIN;
+    return solve(coins, 0, 0, 2);
+  }
+};
+
+class Solution14 {
+ public:
+  int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
+    pair<int, int> directionMult[4] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    set<pair<int, int>> obs;
+    for (vector<int>& ob : obstacles) obs.insert({ob[0], ob[1]});
+    int x = 0, y = 0, direction = 0;
+    for (int move : commands) {
+      if (move == -1) {
+        direction = (direction - 1 + 4) % 4;
+      } else if (move == -2) {
+        direction = (direction + 1) % 4;
+      } else {
+        pair<int, int> directionalMul = directionMult[direction];
+        while (move > 0) {
+          int nx = x + directionalMul.first;
+          int ny = y + directionalMul.second;
+          if (obs.find({nx, ny}) == obs.end()) {
+            nx = x;
+            ny = y;
+          } else {
+            break;
+          }
+        }
+      }
+    }
+    return x * x + y * y;
+  }
+};
+
+class Robot {
+  pair<int, int> directionMult[4] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+  string directions[4] = {"North", "East", "South", "West"};
+  int direction = 1;
+  int x = 0, y = 0;
+  int top, right;
+
+ public:
+  Robot(int width, int height) {
+    top = height - 1;
+    right = width - 1;
+  }
+
+  void changeDirection() { direction = (direction + 3) % 4; }
+
+  void move(int steps) {
+    x = x + steps * directionMult[direction].first;
+    y = y + steps * directionMult[direction].second;
+  }
+
+  int maxStepCanTake(int steps) {
+    switch (direction) {
+      case 0:
+        return min(top, y + steps) - y;
+        break;
+      case 1:
+        return min(right, x + steps) - x;
+        break;
+      case 2:
+        return y - max(0, y - steps);
+        break;
+      case 3:
+        return x - max(0, x - steps);
+        break;
+    }
+    return steps;
+  }
+
+  void step(int num) {
+    int perimeterMoves = 2 * (top + right);
+    num %= perimeterMoves;
+
+    if (num == 0 && x == 0 && y == 0) {
+      direction = 2;
+      return;
+    }
+
+    while (num) {
+      int maxsteps = maxStepCanTake(num);
+      move(maxsteps);
+      num -= maxsteps;
+      if (num > 0) {
+        changeDirection();
+      }
+    }
+  }
+
+  vector<int> getPos() { return {x, y}; }
+
+  string getDir() { return directions[direction]; }
+};
+
+/**
+ * Your Robot object will be instantiated and called as such:
+ * Robot* obj = new Robot(width, height);
+ * obj->step(num);
+ * vector<int> param_2 = obj->getPos();
+ * string param_3 = obj->getDir();
+ */
+
+typedef long long ll;
+class Solution15 {
+  int mod = 1e9 + 7;
+  ll power(ll a, ll b) {
+    if (b == 0) return 1;
+
+    ll half = power(a, b / 2);
+    ll result = (half * half) % mod;
+
+    if (b % 2 == 1) {
+      result = (result * a) % mod;
+    }
+    return result;
+  }
+
+ public:
+  int xorAfterQueries(vector<int>& nums, vector<vector<int>>& queries) {
+    int n = nums.size();
+    int blockSize = ceil(sqrt(n));
+    unordered_map<int, vector<vector<int>>> smallKMap;
+
+    for (auto& q : queries) {
+      int l = q[0], r = q[1], k = q[2], v = q[3];
+
+      if (k >= blockSize) {
+        for (int i = l; i <= r; i += k) {
+          nums[i] = (1ll * nums[i] * v) % mod;
+        }
+      } else {
+        smallKMap[k].push_back(q);
+      }
+    }
+
+    for (auto& [k, allQueries] : smallKMap) {
+      vector<ll> diff(n, 1);
+      for (auto& q : allQueries) {
+        int l = q[0], r = q[1], k = q[2], v = q[3];
+        diff[l] = (diff[l] * v) % mod;
+        int steps = (r - l) / k;
+        int next = l + (steps + 1) * k;
+        if (next < n) diff[next] = (diff[next] * power(v, mod - 2)) % mod;
+      }
+
+      // Calculate cumulative product
+      for (int i = 0; i < n; i++) {
+        if (i - k >= 0) {
+          diff[i] = (diff[i] * diff[i - k]) % mod;
+        }
+      }
+
+      // Apply Cumulative product to nums
+      for (int i = 0; i < n; i++) {
+        nums[i] = (1LL * nums[i] * diff[i]) % mod;
+      }
+    }
+    int result = 0;
+    for (int i = 0; i < n; i++) {
+      result = result ^ nums[i];
+    }
+  }
+};
+
+class DisjointSet {
+  vector<int> parent;
+  vector<int> rank;
+
+ public:
+  DisjointSet(int n) {
+    parent.resize(n);
+    rank.resize(n);
+    for (int i = 0; i < n; i++) parent[i] = i, rank[i] = 0;
+  }
+
+  int find_parent(int n) {
+    if (n == parent[n]) return n;
+    return parent[n] = find_parent(parent[n]);  // Path compression
+  }
+  void union_nodes(int u, int v)  // Union by rank
+  {
+    int parent_of_u = find_parent(u);
+    int parent_of_v = find_parent(v);
+    if (rank[parent_of_u] > rank[parent_of_v])
+      parent[parent_of_v] = parent_of_u;
+    else if (rank[parent_of_u] < rank[parent_of_v])
+      parent[parent_of_u] = parent_of_v;
+    else {
+      parent[parent_of_u] = parent_of_v;
+      rank[parent_of_v] += 1;
+    }
+  }
+};
+
+class Solution16 {
+ public:
+  int minimumHammingDistance(vector<int>& source, vector<int>& target, vector<vector<int>>& allowedSwaps) {
+    DisjointSet ds(source.size());
+
+    for (auto& swap : allowedSwaps) ds.union_nodes(swap[0], swap[1]);
+
+    unordered_map<int, unordered_map<int, int>> groups;
+
+    for (int i = 0; i < source.size(); i++) {
+      groups[ds.find_parent(i)][source[i]]++;
+    }
+
+    int distance = source.size();
+
+    for (int i = 0; i < source.size(); i++) {
+      int parent = ds.find_parent(i);
+      if (groups[parent][target[i]] > 0) {
+        groups[parent][target[i]]--;
+        distance--;
+      }
+    }
+    return distance;
+  }
+};
+
+class Solution17 {
+ public:
+  vector<string> twoEditWords(vector<string>& queries, vector<string>& dictionary) {
+    vector<string> result;
+    for (string& s : queries)
+      for (string& str : dictionary) {
+        int dist = 0;
+        for (int i = 0; i < s.size() && dist < 3; i++)
+          if (str[i] != s[i]) dist++;
+
+        if (dist <= 2) {
+          result.push_back(s);
+          break;
+        }
+      }
+    return result;
+  }
+};
+
+class Solution18 {
+ public:
+  vector<long long> distance(vector<int>& nums) {
+    vector<long long> result(nums.size());
+    unordered_map<int, pair<long, int>> front, back;
+    for (int i = 0; i < nums.size(); i++) {
+      if (front.find(nums[i]) == front.end()) {
+        front[nums[i]] = {0, 0};
+      }
+      auto p = front[nums[i]];
+      front[nums[i]] = {p.first + i, p.second + 1};
+    }
+
+    for (int i = 0; i < nums.size(); i++) {
+      auto pf = front[nums[i]], pb = back[nums[i]];
+
+      long long distance = pf.first - 1LL * i * pf.second + 1LL * i * pb.second - pb.first;
+      long long distance = (1LL * i * pf.second - pf.first) + (pb.first - 1LL * i * pb.second);
+
+      result[i] = distance;
+
+      // Update front and back maps
+      front[nums[i]] = {pf.first - i, pf.second - 1};
+      back[nums[i]] = {pb.first + i, pb.second + 1};
+    }
+    return result;
+  }
+};
+
+class Solution19 {
+  typedef long long ll;
+  int n;
+  ll dp[2][101][101] = {};
+
+ private:
+  ll solve(bool isPrevTaken, int prevHeight, int col, vector<vector<int>>& grid, vector<vector<ll>>& colPrefixSum) {
+    if (col == n) return 0;
+
+    ll result = 0;
+
+    if (dp[isPrevTaken][prevHeight][col] != -1) return dp[isPrevTaken][prevHeight][col];
+
+    for (int h = 0; h <= n; h++) {
+      ll prevColScore = 0;
+      ll currColScore = 0;
+
+      if (!isPrevTaken && col > 0 && h > prevHeight) {
+        prevColScore += colPrefixSum[h][col] - colPrefixSum[prevHeight][col];
+      }
+
+      if (prevHeight > h) {
+        currColScore += colPrefixSum[prevHeight][col + 1] - colPrefixSum[h][col + 1];
+      }
+
+      ll currColScoreTaken = currColScore + prevColScore + solve(true, h, col + 1, grid, colPrefixSum);
+      ll currColScoreNotTaken = prevColScore + solve(false, h, col + 1, grid, colPrefixSum);
+
+      result = max({result, currColScoreNotTaken, currColScoreTaken});
+    }
+    return dp[isPrevTaken][prevHeight][col] = result;
+  }
+
+ public:
+  ll maximumScore(vector<vector<int>>& grid) {
+    n = grid.size();
+    vector<vector<ll>> columnPrefixSum(n + 1, vector<ll>(n + 1, 0));
+    memset(dp, -1, sizeof dp);
+
+    for (int col = 1; col <= n; col++)
+      for (int row = 1; row <= n; row++) {
+        columnPrefixSum[row][col] = columnPrefixSum[row - 1][col] + grid[row - 1][col - 1];
+      }
+
+    return solve(false, 0, 0, grid, columnPrefixSum);
+  }
+};
+
+class Solution20 {
+  static int dp[201][201][1001];
+
+ public:
+  int maxPathScore(vector<vector<int>>& grid, int k) {
+    memset(dp, -1, sizeof dp);
+    for (int i = 0; i < grid.size(); i++) {
+      for (int j = 0; j < grid[0].size(); j++) {
+        int creditRequired = grid[i][j] != 0;
+        for (int c = creditRequired; c <= k; c++) {
+          if (i == 0 && j == 0) {
+            dp[i][j][c] = grid[i][j];
+          } else {
+            int prevMax = -1;
+            if (i > 0) prevMax = max(prevMax, dp[i - 1][j][c - creditRequired]);
+            if (j > 0) prevMax = max(prevMax, dp[i][j - 1][c - creditRequired]);
+
+            if (prevMax > -1) dp[i][j][c] = grid[i][j] + prevMax;
+          }
+        }
+      }
+    }
+    int result = -1;
+    for (int c = 0; c <= k; c++) result = max(result, dp[grid.size() - 1][grid[0].size() - 1][c]);
+    return result;
+  }
+};
+
+class Solution21 {
+ public:
+  vector<int> maxValue(vector<int>& nums) {
+    vector<int> result(nums.size());
+    int maxSoFar = INT_MIN;
+    vector<int> leftMax(nums.size()), rightMin(nums.size());
+    for (int i = 0; i < nums.size(); i++) {
+      maxSoFar = max(maxSoFar, nums[i]);
+      leftMax[i] = maxSoFar;
+    }
+    int minSoFar = INT_MAX;
+    for (int i = nums.size() - 1; i >= 0; i--) {
+      minSoFar = min(minSoFar, nums[i]);
+      rightMin[i] = minSoFar;
+    }
+
+    result[nums.size() - 1] = leftMax.back();
+    for (int i = nums.size() - 2; i >= 0; i--) {
+      if (leftMax[i] <= rightMin[i + 1])
+        result[i] = leftMax[i];
+      else
+        result[i] = result[i + 1];
+    }
+    return result;
+  }
+};
+
+class Solution22 {
+ public:
+  int minMoves(vector<int>& nums, int limit) {
+    int n = nums.size();
+    vector<int> diff(limit * 2 + 1, 0);
+
+    for (int i = 0; i < n / 2; i++) {
+      int mini = nums[i], maxi = nums[n - 1 - i];
+      if (mini > maxi) swap(mini, maxi);
+
+      int minVal = mini + 1;
+      int maxVal = maxi + limit;
+
+      diff[2] += 2;
+      diff[minVal] += (-1);
+      diff[maxVal + 1] += 1;
+      diff[mini + maxi] += -1;
+      diff[mini + maxi + 1] += 1;
+    }
+
+    int result = INT_MAX, currMoves = 0;
+    for (int sum = 2; sum <= limit * 2; sum++) {
+      currMoves += diff[sum];
+      result = min(currMoves, result);
+    }
+    return result;
+  }
+};
+
+class Solution23 {
+ public:
+  bool isGood(vector<int>& nums) {
+    if (nums.size() == 1) return nums[0];
+    int freq[201] = {0}, count = 0;
+    for (int num : nums) {
+      if (num > nums.size()) continue;
+      if (freq[num - 1] == 0) count++;
+      freq[num - 1]++;
+    }
+    return count == (nums.size() - 1) && freq[nums.size() - 2] == 2;
+  }
+};
+
+class Solution24 {
+ public:
+  int minJumps(vector<int>& arr) {
+    int n = arr.size();
+    vector<bool> visited(n, false);
+    unordered_map<int, vector<int>> adjList;
+    for (int i = 0; i < n; i++) {
+      adjList[arr[i]].push_back(i);
+    }
+
+    queue<int> q;
+    q.push(0);
+    visited[0] = true;
+    int jumps = 0;
+    while (!q.empty()) {
+      int size = q.size();
+      while (size--) {
+        int node = q.front();
+        q.pop();
+
+        if (node == n - 1) return jumps;
+
+        // Add i+1
+        if (node + 1 < n && !visited[node + 1]) {
+          visited[node + 1] = true;
+          q.push(node + 1);
+        }
+
+        // Add i-1
+        if (node - 1 >= 0 && !visited[node - 1]) {
+          visited[node - 1] = true;
+          q.push(node - 1);
+        }
+
+        // Add Equal indices
+        for (int i : adjList[arr[node]]) {
+          if (i == n - 1) return jumps;
+          if (!visited[i]) {
+            visited[i] = true;
+            q.push(i);
+          }
+        }
+      }
+      jumps++;
+    }
+    return -1;
+  }
+};
+
+class Solution25 {
+ public:
+  vector<int> findThePrefixCommonArray(vector<int>& A, vector<int>& B) {
+    vector<int> m1(51, 0), m2(51, 0);
+    vector<int> ans;
+    for (int i = 0; i < A.size(); i++) {
+      int x = 0;
+      if (m1[B[i]] > 0) x++;
+      ++m2[B[i]];
+      if (m2[A[i]] > 0) x++;
+      ++m1[A[i]];
+
+      ans.push_back((ans.empty() ? 0 : ans.back()) + x);
+    }
+    return ans;
+  }
+};
+
+class Solution26 {
+ public:
+  bool canReach(string s, int minJump, int maxJump) {
+    int n = s.length();
+    vector<bool> visited(n, false);
+    queue<int> q;
+    q.push(0);
+    visited[0] = true;
+    int scanned = 0;
+    while (!q.empty()) {
+      int x = q.front();
+      q.pop();
+
+      if (x == n - 1) return true;
+
+      int temp = max(x + minJump, scanned + 1);
+      for (int i = temp; i <= x + maxJump && i < n; i++) {
+        if (!visited[i] && s[i] == '0') {
+          q.push(i);
+          visited[i] = true;
+        }
+      }
+      scanned = x + maxJump;
+    }
+    return false;
+  }
+};
+
+class Solution27 {
+ public:
+  bool canReach(string s, int minJump, int maxJump) {
+    vector<bool> dp(s.size(), false);
+    dp[0] = 1;
+    int activeSources = 0;
+    for (int i = 1; i < s.size(); i++) {
+      if (i > maxJump && dp[i - maxJump - 1]) activeSources--;
+
+      if (i >= minJump && dp[i - minJump]) activeSources++;
+
+      dp[i] = s[i] == '0' && activeSources > 0;
+    }
+    return dp[s.size() - 1];
+  }
+};
+
+class Solution28 {
+ public:
+  int numberOfSpecialChars(string word) {
+    bool lowercase[26] = {0}, uppercase[26] = {0}, count[26] = {};
+    memset(count, 1, sizeof count);
+    for (char c : word) {
+      if (c >= 'a' && c <= 'z') {
+        lowercase[c - 'a'] = true;
+        if (uppercase[c - 'a']) count[c - 'a'] = false;
+      } else
+        uppercase[c - 'A'] = true;
+    }
+    int ans = 0;
+    for (int i = 0; i < 26; i++) {
+      ans += (lowercase[i] && uppercase[i] && count[i]);
+    }
+    return ans;
+  }
+};
+
+class Solution29 {
+ public:
+  int numberOfSpecialChars(string word) {
+    int lowercase[27] = {0}, uppercase[27] = {0};
+    for (int i = 0; i < word.size(); i++) {
+      char c = word[i];
+      if (c >= 'a' && c <= 'z') {
+        lowercase[c - 'a' + 1] = i + 1;
+      } else if (!uppercase[c - 'A' + 1])
+        uppercase[c - 'A' + 1] = i + 1;
+    }
+    int ans = 0;
+    for (int i = 0; i < 26; i++) {
+      ans += (uppercase[i + 1] && lowercase[i + 1] && lowercase[i + 1] < uppercase[i + 1]);
+    }
+    return ans;
+  }
+};
+class TrieNode {
+ public:
+  TrieNode* childs[26];
+  int smallestIndex;
+  TrieNode() {
+    for (int i = 0; i < 26; i++) {
+      childs[i] = NULL;
+    }
+    smallestIndex = -1;
+  }
+  ~TrieNode() {
+    for (int i = 0; i < 26; i++) delete childs[i];
+  }
+};
+
+class Solution30 {
+  typedef pair<string, int> pr;
+
+ private:
+  bool shouldUpdate(int oldIdx, int newIdx, const vector<string>& wordsContainer) {
+    if (oldIdx == -1) return true;
+    if (wordsContainer[newIdx].length() < wordsContainer[oldIdx].length()) return true;
+    if (wordsContainer[newIdx].length() > wordsContainer[oldIdx].length()) return false;
+    return newIdx < oldIdx;  // Tie-breaker: earliest original index
+  }
+
+  void addWord(int wordIdx, const vector<string>& wordsContainer, TrieNode* root) {
+    TrieNode* parentNode = root;
+    const string& word = wordsContainer[wordIdx];
+
+    if (shouldUpdate(parentNode->smallestIndex, wordIdx, wordsContainer)) {
+      parentNode->smallestIndex = wordIdx;
+    }
+
+    for (int i = word.size() - 1; i >= 0; i--) {
+      char ch = word[i];
+      if (parentNode->childs[ch - 'a'] == NULL) parentNode->childs[ch - 'a'] = new TrieNode();
+      parentNode = parentNode->childs[ch - 'a'];
+      if (shouldUpdate(parentNode->smallestIndex, wordIdx, wordsContainer)) parentNode->smallestIndex = wordIdx;
+    }
+  }
+
+  int find_lcs_index(string& s, TrieNode* root) {
+    int idx = root->smallestIndex;
+    for (int i = s.size() - 1; i >= 0; i--) {
+      if (root->childs[s[i] - 'a'] == NULL) return idx;
+      root = root->childs[s[i] - 'a'];
+      idx = root->smallestIndex;
+    }
+    return idx;
+  }
+
+ public:
+  vector<int> stringIndices(vector<string>& wordsContainer, vector<string>& wordsQuery) {
+    TrieNode* root = new TrieNode();
+    for (int i = 0; i < wordsContainer.size(); i++) {
+      addWord(i, wordsContainer, root);
+    }
+
+    // for (auto& p : wordsContainerWithIndex) cout << p.first << " " << p.second << endl;
+
+    vector<int> result(wordsQuery.size());
+    for (int i = 0; i < wordsQuery.size(); i++) {
+      auto x = find_lcs_index(wordsQuery[i], root);
+      result[i] = x;
+    }
+
+    delete root;
+
+    return result;
+  }
+};
+
+class Solution {
+  // A lightweight structure using internal tracking indexes instead of raw heap pointers.
+  // This layout avoids memory fragmentation and eliminates Memory Limit Exceeded (MLE) issues.
+  struct Node {
+    int childs[26];
+    int smallestIndex;
+    Node() {
+      smallestIndex = -1;
+      // Initialize all child transitions to -1 (indicating no valid path exists)
+      fill(begin(childs), end(childs), -1);
+    }
+  };
+
+ public:
+  vector<int> stringIndices(vector<string>& wordsContainer, vector<string>& wordsQuery) {
+    // Flat continuous memory pool to store Trie nodes. Node 0 acts as the root node.
+    vector<Node> trie;
+    trie.emplace_back();
+
+    // Lambda helper function to handle character insertions into the vector-managed Trie
+    auto addWord = [&](int idx) {
+      string& word = wordsContainer[idx];
+      int currNodeIndex = 0;  // Always start traversal from the root node index (0)
+
+      // Lambda comparator to execute tie-breaking priority mechanics on the fly
+      auto shouldUpdate = [&](int oldIdx, int newIdx) {
+        if (oldIdx == -1) return true;
+        // Metric 1: Shorter overall word length wins
+        if (wordsContainer[newIdx].length() < wordsContainer[oldIdx].length()) return true;
+        if (wordsContainer[newIdx].length() > wordsContainer[oldIdx].length()) return false;
+        // Metric 2: Earliest original source index breaks the length tie
+        return newIdx < oldIdx;
+      };
+
+      // Explicitly update the global fallback choice stored at the root level node
+      if (shouldUpdate(trie[currNodeIndex].smallestIndex, idx)) {
+        trie[currNodeIndex].smallestIndex = idx;
+      }
+
+      // Loop over characters in reverse order to seamlessly support suffix pattern paths
+      for (int j = word.size() - 1; j >= 0; j--) {
+        int charIdx = word[j] - 'a';
+
+        // Dynamically scale the vector pool size when a character branch has not been allocated
+        if (trie[currNodeIndex].childs[charIdx] == -1) {
+          trie[currNodeIndex].childs[charIdx] = trie.size();
+          trie.emplace_back();
+        }
+
+        // Progress downwards to the matching child node index position
+        currNodeIndex = trie[currNodeIndex].childs[charIdx];
+
+        // Evaluate and update the node optimal mapping choice at this depth layer
+        if (shouldUpdate(trie[currNodeIndex].smallestIndex, idx)) {
+          trie[currNodeIndex].smallestIndex = idx;  // vectors / arrays can relocate in memory when growing, but relative indices remain valid.
+        }
+      }
+    };
+
+    // Lambda helper function to query the Trie structure and return the longest common suffix index
+    auto find_lcs_index = [&](int idx) {
+      string& query = wordsQuery[idx];
+      int currNodeIndex = 0;
+      int ans = trie[0].smallestIndex;  // Default lookup fallback to the root tracking index
+
+      // Traverse character matches backwards from the string query input
+      for (int j = query.size() - 1; j >= 0; j--) {
+        int charIdx = query[j] - 'a';
+        // If the character path breaks, immediately terminate search and return current best match
+        if (trie[currNodeIndex].childs[charIdx] == -1) return ans;
+
+        currNodeIndex = trie[currNodeIndex].childs[charIdx];
+        ans = trie[currNodeIndex].smallestIndex;
+      }
+      return ans;
+    };
+
+    // Stage 1: Build the complete indexed suffix map within the Trie allocation framework
+    for (int i = 0; i < wordsContainer.size(); i++) addWord(i);
+
+    // Stage 2: Initialize result space and resolve matching logic across all queries
+    vector<int> result(wordsQuery.size());
+    for (int i = 0; i < wordsQuery.size(); i++) result[i] = find_lcs_index(i);
+
     return result;
   }
 };
