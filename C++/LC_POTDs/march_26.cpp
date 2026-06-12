@@ -1129,7 +1129,7 @@ class Solution30 {
   }
 };
 
-class Solution {
+class Solution31 {
   // A lightweight structure using internal tracking indexes instead of raw heap pointers.
   // This layout avoids memory fragmentation and eliminates Memory Limit Exceeded (MLE) issues.
   struct Node {
@@ -1213,6 +1213,154 @@ class Solution {
     vector<int> result(wordsQuery.size());
     for (int i = 0; i < wordsQuery.size(); i++) result[i] = find_lcs_index(i);
 
+    return result;
+  }
+};
+
+class Solution32 {
+ public:
+  int earliestFinishTime(vector<int>& landStartTime, vector<int>& landDuration, vector<int>& waterStartTime, vector<int>& waterDuration) {
+    int result = INT_MAX;
+    for (int i = 0; i < landDuration.size(); i++) {
+      int landStart = landStartTime[i], landEndTime = landStart + landDuration[i];
+      for (int j = 0; j < waterDuration.size(); j++) {
+        int waterStart = waterStartTime[j], waterEndTime = waterStart + waterDuration[j];
+        result = min(result, max(landEndTime, waterStart) + waterDuration[j]);
+        result = min(result, max(waterEndTime, landStart) + landDuration[i]);
+      }
+    }
+    return result;
+  }
+};
+
+class Solution33 {
+ public:
+  int earliestFinishTime(vector<int>& landStartTime, vector<int>& landDuration, vector<int>& waterStartTime, vector<int>& waterDuration) {
+    int min_land_ride_end_time = INT_MAX;
+    int min_water_ride_end_time = INT_MAX;
+    for (int i = 0; i < landStartTime.size(); i++) {
+      min_land_ride_end_time = min(min_land_ride_end_time, landStartTime[i] + landDuration[i]);
+    }
+    for (int i = 0; i < waterStartTime.size(); i++) {
+      min_water_ride_end_time = min(min_water_ride_end_time, waterStartTime[i] + waterDuration[i]);
+    }
+
+    int take_land_ride_first = INT_MAX;
+    int take_water_ride_first = INT_MAX;
+
+    for (int i = 0; i < waterStartTime.size(); i++) {
+      take_land_ride_first = min(take_land_ride_first, max(min_land_ride_end_time, waterStartTime[i]) + waterDuration[i]);
+    }
+
+    for (int i = 0; i < landStartTime.size(); i++) {
+      take_water_ride_first = min(take_water_ride_first, max(min_water_ride_end_time, landStartTime[i]) + landDuration[i]);
+    }
+
+    return min(take_water_ride_first, take_land_ride_first);
+  }
+};
+
+class Solution34 {
+ public:
+  vector<int> pivotArray(vector<int>& nums, int pivot) {
+    vector<int> result;
+    for (int num : nums) {
+      if (num < pivot) result.push_back(num);
+    }
+    for (int num : nums) {
+      if (num == pivot) result.push_back(num);
+    }
+    for (int num : nums) {
+      if (num > pivot) result.push_back(num);
+    }
+    return result;
+  }
+};
+
+class Solution35 {
+ public:
+  long long maxTotalValue(vector<int>& nums, int k) {
+    int mini = INT_MAX, maxi = INT_MIN;
+    for (int i : nums) {
+      mini = min(mini, i);
+      maxi = max(maxi, i);
+    }
+    return 1LL * (maxi - mini) * k;
+  }
+};
+
+typedef long long ll;
+
+class SegmentTree {
+  bool isMinTree;
+  vector<int> segmentTree;
+
+  void buildSegmentTree(int i, int l, int r, vector<int>& nums) {
+    if (l == r) {
+      segmentTree[i] = nums[r];
+      return;
+    }
+    int mid = l + (r - l) / 2;
+    buildSegmentTree(i * 2 + 1, l, mid, nums);
+    buildSegmentTree(i * 2 + 2, mid + 1, r, nums);
+    if (this->isMinTree)
+      segmentTree[i] = min(segmentTree[i * 2 + 1], segmentTree[i * 2 + 2]);
+    else
+      segmentTree[i] = max(segmentTree[i * 2 + 1], segmentTree[i * 2 + 2]);
+  }
+
+ public:
+  SegmentTree(vector<int>& nums, bool isMinTree) {
+    int n = nums.size();
+    this->isMinTree = isMinTree;
+    this->segmentTree.resize(4 * n);
+    buildSegmentTree(0, 0, n - 1, nums);
+  }
+
+  int query(int start, int end, int i, int l, int r) {
+    // No-Overlap
+    if (l > end || r < start) return this->isMinTree ? INT_MAX : INT_MIN;
+
+    // Complete OverLap
+    if (l >= start && r <= end) return segmentTree[i];
+
+    int mid = l + (r - l) / 2;
+
+    int left = query(start, end, i * 2 + 1, l, mid);
+    int right = query(start, end, i * 2 + 2, mid + 1, r);
+    return this->isMinTree ? min(left, right) : max(left, right);
+  }
+};
+class Solution {
+ private:
+  ll getValue(int l, int r, SegmentTree& minSegTree, SegmentTree& maxSegTree, int n) {
+    int minEle = minSegTree.query(l, r, 0, 0, n - 1);
+    int maxEle = maxSegTree.query(l, r, 0, 0, n - 1);
+    return (ll)maxEle - minEle;
+  }
+
+ public:
+  long long maxTotalValue(vector<int>& nums, int k) {
+    int n = nums.size();
+    priority_queue<tuple<ll, int, int>> pq;
+
+    SegmentTree minSegTree(nums, true), maxSegTree(nums, false);
+
+    for (int l = 0; l < n; l++) {
+      ll value = getValue(l, n - 1, minSegTree, maxSegTree, n);
+      pq.push({value, l, n - 1});
+    }
+
+    ll result = 0;
+    while (k--) {
+      auto [val, l, r] = pq.top();
+      result += val;
+      pq.pop();
+      if (l < r) {
+        ll nextBestValue = getValue(l, r - 1, minSegTree, maxSegTree, n);
+        pq.push({nextBestValue, l, r - 1});
+      }
+    }
     return result;
   }
 };
