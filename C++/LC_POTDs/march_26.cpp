@@ -1331,7 +1331,7 @@ class SegmentTree {
     return this->isMinTree ? min(left, right) : max(left, right);
   }
 };
-class Solution {
+class Solution36 {
  private:
   ll getValue(int l, int r, SegmentTree& minSegTree, SegmentTree& maxSegTree, int n) {
     int minEle = minSegTree.query(l, r, 0, 0, n - 1);
@@ -1360,6 +1360,106 @@ class Solution {
         ll nextBestValue = getValue(l, r - 1, minSegTree, maxSegTree, n);
         pq.push({nextBestValue, l, r - 1});
       }
+    }
+    return result;
+  }
+};
+
+// Binary Lifting
+
+class Solution37 {
+  int LOG = 20;
+  vector<vector<int>> ancestorTable;
+  vector<int> depthTable;
+
+ private:
+  void buildAncestorTable(vector<vector<int>>& adj, int node, int parent = -1) {
+    ancestorTable[node][0] = parent;
+    for (int j = 1; j < LOG; j++) {
+      if (ancestorTable[ancestorTable[node][j - 1]][j - 1] != -1) {
+        ancestorTable[node][j] = ancestorTable[ancestorTable[node][j - 1]][j - 1];
+      }
+    }
+    for (int child : adj[node]) {
+      if (child != parent) {
+        depthTable[child] = depthTable[node] + 1;
+        buildAncestorTable(adj, child, node);
+      }
+    }
+  }
+
+  int getLCA(int u, int v) {
+    if (depthTable[u] < depthTable[v]) swap(u, v);
+
+    int diff = depthTable[u] - depthTable[v];
+
+    for (int i = 0; i < LOG; i++)
+      if (diff & (1 << i)) {
+        u = ancestorTable[u][i];
+      }
+
+    if (u == v) return u;
+
+    for (int i = LOG - 1; i >= 0; i--) {
+      if (ancestorTable[u] != ancestorTable[v]) {
+        u = ancestorTable[u][i];
+        v = ancestorTable[v][i];
+      }
+    }
+    return ancestorTable[u][0];
+  }
+
+  int distanceBetweenNodes(int u, int v) {
+    int lca = getLCA(u, v);
+
+    int distance = depthTable[v] + depthTable[u] - 2 * depthTable[lca];
+    return distance;
+  }
+
+  long binaryModularExponentiation(int n, int exp) {
+    long result = 1;
+    int MOD = 1e9 + 7;
+    while (exp) {
+      if (exp & 1) result = (result * n) % MOD;
+      n = 1L * (n * n) % MOD;
+      exp >>= 1;
+    }
+    return result;
+  }
+
+ public:
+  vector<int> assignEdgeWeights(vector<vector<int>>& edges, vector<vector<int>>& queries) {
+    int n = edges.size() + 1;
+    ancestorTable.assign(n, vector<int>(LOG));
+    depthTable.assign(n, -1);
+    vector<vector<int>> adj(n + 1);
+
+    buildAncestorTable(adj, 1);
+    vector<int> result;
+    for (auto& query : queries) {
+      int distance = distanceBetweenNodes(query[0], query[1]);
+      result.push_back(binaryModularExponentiation(2, distance - 1));
+    }
+    return result;
+  }
+};
+
+class Solution {
+ public:
+  string processStr(string s) {
+    string result = "";
+    for (char c : s) {
+      if (c >= 'a' & c <= 'z') {
+        result.push_back(c);
+        continue;
+      }
+      if (result.empty()) continue;
+      if (c == '*')
+        result.pop_back();
+      else if (c == '#')
+        result += result;
+      else if (c == '%')
+        reverse(begin(result), end(result));
     }
     return result;
   }
