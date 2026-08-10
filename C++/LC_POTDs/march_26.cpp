@@ -1464,3 +1464,313 @@ class Solution {
     return result;
   }
 };
+
+class Solution {
+  int dp[2001][2001][2];
+  int K;
+  const int MOD = 1e9 + 7;
+  long recurse(int direction, int n, int prev) {
+    if (n == 0) return 1;
+    if (prev < 1 || prev > K) return 0;
+    if (dp[n][prev][direction] != -1) {
+      return dp[n][prev][direction];
+    }
+    long number_of_ways = 0;
+
+    if (direction == 1 && prev + 1 <= K) {
+      // Take this number
+      number_of_ways = (number_of_ways + recurse(0, n - 1, prev + 1)) % MOD;
+      number_of_ways = (number_of_ways + recurse(1, n, prev + 1)) % MOD;
+    } else if (direction == 0 && prev - 1 >= 1) {
+      number_of_ways = (number_of_ways + recurse(1, n - 1, prev - 1)) % MOD;
+      number_of_ways = (number_of_ways + recurse(0, n, prev - 1)) % MOD;
+    }
+
+    return dp[n][prev][direction] = number_of_ways % MOD;
+  };
+
+ public:
+  int zigZagArrays(int n, int l, int r) {
+    K = r - l + 1;
+    memset(dp, -1, sizeof dp);
+    long total_ways = 0;
+
+    for (int i = 1; i <= K; i++) {
+      total_ways = (total_ways + recurse(1, n - 1, i)) % MOD;
+      total_ways = (total_ways + recurse(0, n - 1, i)) % MOD;
+    }
+
+    return total_ways;
+  }
+};
+class Solution {
+  int K;
+  const int MOD = 1e9 + 7;
+
+ public:
+  int zigZagArrays(int n, int l, int r) {
+    K = r - l + 1;
+    vector<long> upDP(K + 2, 0), downDP(K + 2, 0);
+
+    for (int i = 1; i <= K; i++) {
+      upDP[i] = 1;
+      downDP[i] = 1;
+    }
+    long total_ways = 0;
+
+    for (int len = 1; len < n; len++) {
+      vector<long> currUpDP(K + 2), currDownDP(K + 2);
+      // Direction 1
+      for (int prev = K; prev >= 1; prev--) {
+        long number_of_ways = 0;
+        number_of_ways = (number_of_ways + currUpDP[prev + 1]) % MOD;
+        number_of_ways = (number_of_ways + downDP[prev + 1]) % MOD;
+        currUpDP[prev] = number_of_ways;
+      }
+
+      // Direction 0
+      for (int prev = 1; prev <= K; prev++) {
+        long number_of_ways = 0;
+        number_of_ways = (number_of_ways + currDownDP[prev - 1]) % MOD;
+        number_of_ways = (number_of_ways + upDP[prev - 1]) % MOD;
+        currDownDP[prev] = number_of_ways;
+      }
+      upDP = currUpDP;
+      downDP = currDownDP;
+    }
+
+    for (int i = 1; i <= K; i++) {
+      total_ways = (total_ways + upDP[i] + downDP[i]) % MOD;
+    }
+
+    return total_ways;
+  }
+};
+
+class Solution {
+  int dp[2001][2001][2];
+
+  const int MOD = 1e9 + 7;
+  long recurse(int l, int r, int direction, int n, int prev) {
+    if (n == 0) return 1;
+    if (prev < l || prev > r) return 0;
+    if (dp[n][prev][direction] != -1) {
+      return dp[n][prev][direction];
+    }
+    long number_of_ways = 0;
+
+    if (direction == 1 && prev <= r) {
+      // Take this number
+      number_of_ways = (number_of_ways + recurse(l, r, 0, n - 1, prev + 1)) % MOD;
+      number_of_ways = (number_of_ways + recurse(l, r, 1, n, prev + 1)) % MOD;
+    } else if (direction == 0 && prev - 1 >= l) {
+      number_of_ways = (number_of_ways + recurse(l, r, 1, n - 1, prev - 1)) % MOD;
+      number_of_ways = (number_of_ways + recurse(l, r, 0, n, prev - 1)) % MOD;
+    }
+
+    return dp[n][prev][direction] = number_of_ways % MOD;
+  };
+
+ public:
+  int zigZagArrays(int n, int l, int r) {
+    memset(dp, -1, sizeof dp);
+    long total_ways = 0;
+
+    for (int i = l; i <= r; i++) {
+      total_ways = (total_ways + recurse(l, r, 1, n - 1, i)) % MOD;
+      total_ways = (total_ways + recurse(l, r, 0, n - 1, i)) % MOD;
+    }
+
+    return total_ways;
+  }
+};
+
+/**
+ * LC: 3700. Number of ZigZag Arrays II
+ */
+
+class Solution {
+  typedef vector<vector<long>> matrix;
+  typedef long long ll;
+  int MOD = 1e9 + 7;
+
+  matrix multiply(matrix& A, matrix& B, int size) {
+    matrix res(size, vector<long>(size, 0));
+    for (int i = 0; i < size; i++) {
+      for (int k = 0; k < size; k++) {
+        if (A[i][k] == 0) continue;
+        for (int j = 0; j < size; j++) {
+          res[i][j] = (res[i][j] + A[i][k] * B[k][j]) % MOD;
+        }
+      }
+    }
+    return res;
+  }
+
+  matrix powerMatrix(matrix& base, long exp, int size) {
+    matrix res(size, vector<long>(size, 0));
+
+    for (int i = 0; i < size; i++) {
+      res[i][i] = 1;
+    }
+
+    // Binary exponentiation
+    while (exp > 0) {
+      if (exp % 2 == 1) {
+        res = multiply(res, base, size);
+      }
+      base = multiply(base, base, size);
+      exp >>= 1;
+    }
+    return res;
+  }
+
+ public:
+  int zigZagArrays(int n, int l, int r) {
+    int k = r - l + 1;
+    int states = k * 2;
+    matrix T(states, vector<long>(states, 0));
+
+    for (int val_u = 1; val_u <= k; val_u++) {
+      for (int val_v = 1; val_v <= k; val_v++) {
+        // Moving up
+        if (val_u < val_v) {
+          int u = val_u + k;
+          int v = val_v;
+
+          T[u][v] = 1;
+        }  // Moving Down
+        else if (val_u > val_v) {
+          int u = val_u;
+          int v = val_v + k;
+          T[u][v] = 1;
+        }
+
+        // for val_u==val_v do nothing-->0
+      }
+    }
+
+    // Power Transition matrix
+    matrix M_pow = powerMatrix(T, n - 1, states);
+
+    long total_ways = 0;
+
+    for (int i = 0; i < states; i++)
+      for (int j = 0; j < states; j++) {
+        total_ways = (total_ways + M_pow[i][j]) % MOD;
+      }
+    return total_ways;
+  }
+};
+
+class Solution {
+ public:
+  int countMajoritySubarrays(vector<int>& nums, int target) {
+    int res = 0;
+    for (int i = 0; i < nums.size(); i++) {
+      int count = 0;
+      for (int j = i; j < nums.size(); j++) {
+        if (nums[j] == target) count++;
+        if ((j - i + 1) / 2 < count) res++;
+      }
+    }
+    return res;
+  }
+};
+
+class Solution {
+  long long nCr(int n, int r, int k) {
+    long long result = 1;
+    r = min(r, n - r);
+    for (int i = 1; i <= r; i++) {
+      result = result * (n - r + i) / i;
+      if (result >= k) return k;
+    }
+    return result;
+  }
+
+ public:
+  string smallestPalindrome(string s, int k) {
+    int n = s.size();
+    string result = "";
+    int freq[26] = {0};
+    for (char c : s) freq[c - 'a']++;
+
+    int middleChar = -1;
+    for (int i = 0; i < 26; i++) {
+      if (freq[i] & 1) middleChar = i;
+      freq[i] /= 2;
+    }
+
+    for (int i = 0; i < n / 2; i++) {
+      bool isCharPicked = false;
+      for (int j = 0; j < 26; j++) {
+        if (freq[j] > 0) {
+          freq[j] -= 1;
+          long long ways = 1;
+          int letters = 0;
+          for (int c = 0; c < 26; c++) letters += freq[c];
+
+          for (int c = 0; c < 26; c++) {
+            if (freq[c] > 0) {
+              ways *= nCr(letters, freq[c], k);
+              letters -= freq[c];
+            }
+            if (ways >= k) break;
+          }
+          if (ways >= k) {
+            result.push_back(j + 'a');
+            isCharPicked = true;
+            break;
+          }
+          k -= ways;
+          freq[j] += 1;
+        }
+      }
+      if (!isCharPicked) {
+        return "";
+      }
+    }
+
+    string rev = result;
+    reverse(begin(rev), end(rev));
+    cout << result;
+    if (middleChar != -1) {
+      result += (middleChar + 'a');
+    }
+    return result + rev;
+  }
+};
+
+class Solution {
+ public:
+  bool winnerSquareGame(int n) {
+    vector<bool> dp(n + 1, false);
+    dp[1] = true;
+    for (int i = 1; i <= n; i++) {
+      for (int j = sqrt(i); j >= 1; j--) {
+        if (!dp[i - j * j]) {
+          dp[i] = true;
+          break;
+        }
+      }
+    }
+    return dp[n];
+  }
+};
+
+class Solution {
+ public:
+  bool kar98(int n, vector<int>& dp) {
+    if (n <= 0) return false;
+    if (dp[n] != -1) return dp[n];
+    for (int i = sqrt(n); i >= 1; i--) {
+      if (!(kar98(n - i * i, dp))) return dp[n] = 1;
+    }
+    return dp[n] = 0;
+  }
+  bool winnerSquareGame(int n) {
+    vector<int> dp(n + 1, -1);
+    return kar98(n, dp);
+  }
+};
